@@ -1,6 +1,6 @@
 # Arvestustöö raport
 
-Nimi: NIMI  
+Nimi: Mattias Kingo  
 Variant: A  
 Kuupäev: 2026-10-09  
 
