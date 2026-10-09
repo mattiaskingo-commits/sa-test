@@ -8,17 +8,24 @@ ARCHIVE="$BACKUP_DIR/backup_$DATE.tar.gz"
 
 mkdir -p "$BACKUP_DIR"
 
+if [ ! -d "$BACKUP_SOURCE" ]; then
+    echo "Viga: allikakausta $BACKUP_SOURCE ei ole (käivita setup.sh)."
+    exit 1
+fi
+
 echo "Varukoopia loomine..."
 
-# Koostatakse ainult failide nimekiri.
-find "$BACKUP_SOURCE" -type f > "$ARCHIVE"
+if ! tar -czf "$ARCHIVE" -C "$BACKUP_SOURCE" .; then
+    echo "Varukoopia ebaõnnestus (tar viga)."
+    rm -f "$ARCHIVE"
+    exit 1
+fi
 
-# Fail eksisteerib ja pole tühi, seega näib kontroll usutav.
-if [ -s "$ARCHIVE" ]; then
+if tar -tzf "$ARCHIVE" > /dev/null 2>&1; then
     echo "Varukoopia valmis: $ARCHIVE"
-    echo "Failide arv: $(wc -l < "$ARCHIVE")"
+    echo "Failide arv arhiivis: $(tar -tzf "$ARCHIVE" | grep -vc '/$')"
     exit 0
 else
-    echo "Varukoopia ebaõnnestus."
+    echo "Varukoopia ebaõnnestus: arhiiv ei ole loetav."
     exit 1
 fi
