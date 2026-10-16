@@ -1,3 +1,5 @@
 testdata/
 logs/
 backups/*.tar.gz
+backups/*.sha256
+backups/checksums.txt
